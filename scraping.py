@@ -98,7 +98,10 @@ class Bot():
                 except:
                     break
 
-                class_name = event.get_attribute('class')
+                try:
+                    class_name = event.get_attribute('class')
+                except:
+                    break
 
                 if 'event__header' in class_name:
                     correct_league, league_info = self.is_correct_league(event)
