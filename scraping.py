@@ -169,7 +169,7 @@ class Bot():
         minute = 0
         quater = 0
 
-        if ('Перерыв' in data['event__stage']):
+        if ('Перерыв' in data['event_stage']):
             try:
                 self.driver.find_element_by_xpath('//*[@id="g_3_{id}"]/div[11]'.format(id=data['id']))
             except:
