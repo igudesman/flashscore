@@ -3,15 +3,20 @@ from selenium.webdriver.common.keys import Keys
 from time import sleep
 from settings import leagues, URL, COEF
 from signal import telegram_bot_sendtext
-
-from pyvirtualdisplay import Display
+import os
 
 
 class Bot():
 
     def __init__(self, url):
 
-        self.driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--no-sandbox")
+        self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+
         self.driver.implicitly_wait(10)
         self.url = url
         self.move_to_live_section()
@@ -257,7 +262,7 @@ def testing(bot):
 
 
 if __name__ == '__main__':
-    
+
     display = Display(visible=0, size=(800, 600))
     display.start()
 
