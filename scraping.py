@@ -263,9 +263,6 @@ def testing(bot):
 
 if __name__ == '__main__':
 
-    display = Display(visible=0, size=(800, 600))
-    display.start()
-
     bot = Bot(URL)
     bot.checking_loop(10)
 
