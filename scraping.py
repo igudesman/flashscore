@@ -17,6 +17,7 @@ class Bot():
         chrome_options.add_argument("--no-sandbox")
         self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
+        self.already_alerted_ids = []
         self.driver.implicitly_wait(10)
         self.url = url
         self.move_to_live_section()
@@ -53,7 +54,8 @@ class Bot():
         id = id.split('_')[-1]
         event_url = 'https://www.flashscore.ru/match/{id}/#match-statistics;'.format(id=id)
 
-        return {'event_stage': event_stage,
+        return {'id': id,
+                'event_stage': event_stage,
                 'event_participant_home': event_participant_home,
                 'event_participant_away': event_participant_away,
                 'event_url': event_url}
@@ -109,6 +111,8 @@ class Bot():
                     bet = self.calculate_indicator(match_info)
                     match_info['league'] = league_info
                     if bet:
+                        if match_info['id'] not in self.already_alerted_ids:
+                            self.already_alerted_ids.append(match_info['id'])
                         telegram_bot_sendtext(match_info)
 
 
@@ -134,7 +138,13 @@ class Bot():
             except:
                 break
 
-            if (stats.get_attribute('class') != 'statRow'):
+            try:
+                stats_class_name = stats.get_attribute('class')
+            except:
+                block_id += 1
+                continue
+
+            if (stats_class_name != 'statRow'):
                 block_id += 1
                 continue
 
@@ -159,20 +169,27 @@ class Bot():
         minute = 0
         quater = 0
 
-        if ('Завершен' not in data['event_stage']) and ('Перерыв' not in data['event_stage']) and ('Перенесен' not in data['event_stage']) and (data['event_stage'] != ''):
+        if ('Перерыв' in data['event__stage']):
             try:
-                quater = int(data['event_stage'][0])
-                minute = int(data['event_stage'].splitlines()[1])
+                self.driver.find_element_by_xpath('//*[@id="g_3_{id}"]/div[11]'.format(id=data['id']))
             except:
-                print('Something went wrong with event_stage: ', data['event_stage'])
+                print('Break.')
                 return False
+        # elif ('Завершен' not in data['event_stage']) and ('Перенесен' not in data['event_stage']) and (data['event_stage'] != ''):
+        #     try:
+        #         quater = int(data['event_stage'][0])
+        #         minute = int(data['event_stage'].splitlines()[1])
+        #     except:
+        #         print('Something went wrong with event_stage: ', data['event_stage'])
+        #         return False
         else:
             return False
 
         print('{0} - {1}'.format(data['event_participant_home'], data['event_participant_away']))
-        if (quater != 3):
-            print('Not 3-rd quarter.')
-            return False
+
+        # if (quater != 3):
+        #     print('Not 3-rd quarter.')
+        #     return False
 
         # Switch to the new window and open URL B
         self.driver.execute_script("window.open('');")

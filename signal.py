@@ -6,7 +6,7 @@ def telegram_bot_sendtext(match_info):
     bot_message = message_form.format(league=match_info['league']['type'] + ': ' + match_info['league']['name'],
                                       team_1=match_info['event_participant_home'],
                                       team_2=match_info['event_participant_away'],
-                                      time=match_info['event_stage'].splitlines()[0] + ' ' + match_info['event_stage'].splitlines()[1],
+                                      time=match_info['event_stage'],
                                       url=match_info['event_url'])
     bot_token = TOKEN
     bot_chatID = chatID
