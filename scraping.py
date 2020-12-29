@@ -113,11 +113,11 @@ class Bot():
                     match_info = self.event_info(event)
                     bet = self.calculate_indicator(match_info)
                     match_info['league'] = league_info
+                    telegram_bot_sendtext(match_info, True)
                     if bet:
                         if match_info['id'] not in self.already_alerted_ids:
                             self.already_alerted_ids.append(match_info['id'])
-                        telegram_bot_sendtext(match_info)
-
+                            telegram_bot_sendtext(match_info)
 
                 block_id += 1
 
