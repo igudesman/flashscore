@@ -84,7 +84,7 @@ class Bot():
                 games_section = self.driver.find_element_by_xpath('/html/body/div[5]/div[1]/div/div[1]/div[2]/div[4]/div[2]/div[2]/div/div')
             except:
                 print('Access is denied. Trying again..')
-                self.driver.refresh()
+                self.move_to_live_section()
                 self.checking_loop(timeout)
 
             correct_league = False
@@ -113,11 +113,11 @@ class Bot():
                     match_info = self.event_info(event)
                     bet = self.calculate_indicator(match_info)
                     match_info['league'] = league_info
-                    telegram_bot_sendtext(match_info, True)
+                    # telegram_bot_sendtext(match_info, True)
                     if bet:
                         if match_info['id'] not in self.already_alerted_ids:
                             self.already_alerted_ids.append(match_info['id'])
-                            telegram_bot_sendtext(match_info)
+                            telegram_bot_sendtext(match_info, False)
 
                 block_id += 1
 
