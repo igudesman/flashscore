@@ -113,7 +113,7 @@ class Bot():
                     match_info = self.event_info(event)
                     bet = self.calculate_indicator(match_info)
                     match_info['league'] = league_info
-                    telegram_bot_sendtext(match_info, True)
+                    # telegram_bot_sendtext(match_info, True)
                     if bet:
                         if match_info['id'] not in self.already_alerted_ids:
                             self.already_alerted_ids.append(match_info['id'])
@@ -178,21 +178,21 @@ class Bot():
             except:
                 print('Break.')
                 return False
-        # elif ('Завершен' not in data['event_stage']) and ('Перенесен' not in data['event_stage']) and (data['event_stage'] != ''):
-        #     try:
-        #         quater = int(data['event_stage'][0])
-        #         minute = int(data['event_stage'].splitlines()[1])
-        #     except:
-        #         print('Something went wrong with event_stage: ', data['event_stage'])
-        #         return False
+        elif ('Завершен' not in data['event_stage']) and ('Перенесен' not in data['event_stage']) and (data['event_stage'] != ''):
+            try:
+                quater = int(data['event_stage'][0])
+                minute = int(data['event_stage'].splitlines()[1])
+
+                if (quater != 3) or (minute < 9):
+                    print('Not 3-rd quarter.')
+                    return False
+            except:
+                print('Something went wrong with event_stage: ', data['event_stage'])
+                return False
         else:
             return False
 
         print('{0} - {1}'.format(data['event_participant_home'], data['event_participant_away']))
-
-        # if (quater != 3):
-        #     print('Not 3-rd quarter.')
-        #     return False
 
         # Switch to the new window and open URL B
         self.driver.execute_script("window.open('');")
