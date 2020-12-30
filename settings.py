@@ -38,7 +38,7 @@ URL = 'https://www.flashscore.ru/basketball/'
 COEF = 1.15
 
 TOKEN = '1416209037:AAH0PxZAW16ctU9JaNqEYfCSq3lAoNIx6Rg'
-chatID = '46506228'
+chatID = ['46506228', '1173821533']
 message_form = """Приготовиться !!!
 Лига: {league}
 Играют: {team_1} - {team_2}

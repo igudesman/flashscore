@@ -19,8 +19,8 @@ def telegram_bot_sendtext(match_info, DEBUG=False):
                                       team_2=match_info['event_participant_away'],
                                       time=match_info['event_stage'],
                                       url=match_info['event_url'])
-
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
-    response = requests.get(send_text)
+    for id in bot_chatID:
+        send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + id + '&parse_mode=Markdown&text=' + bot_message
+        response = requests.get(send_text)
 
     return response.json()
