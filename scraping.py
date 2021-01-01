@@ -255,6 +255,9 @@ class Bot():
 
         if len(coefs) != 2:
             print('Did not find coefs.')
+            self.driver.close()
+            self.driver.switch_to.window(self.driver.window_handles[0])
+            return False
 
         if BET == 'HOME':
             if coefs[0] < COEF:
