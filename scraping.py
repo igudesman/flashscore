@@ -61,7 +61,6 @@ class Bot():
                 'event_url': event_url}
 
 
-
     def is_correct_league(self, league_object):
 
         league = league_object.find_element_by_class_name('event__titleBox')
@@ -69,8 +68,8 @@ class Bot():
         name = league.find_element_by_class_name('event__title--name').text
 
         if type in leagues.keys():
-			return True, {'type': type,
-						  'name': name}
+            return True, {'type': type,
+                          'name': name}
 
         return False, None
 
