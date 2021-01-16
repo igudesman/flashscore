@@ -70,7 +70,7 @@ class Bot():
 
         if type in leagues.keys():
             for n in leagues[type]:
-                if name in n
+                if name in n:
                     return True, {'type': type,
                                   'name': name}
 
