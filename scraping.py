@@ -69,10 +69,8 @@ class Bot():
         name = league.find_element_by_class_name('event__title--name').text
 
         if type in leagues.keys():
-            for n in leagues[type]:
-                if name in n:
-                    return True, {'type': type,
-                                  'name': name}
+			return True, {'type': type,
+						  'name': name}
 
         return False, None
 
