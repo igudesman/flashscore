@@ -79,7 +79,7 @@ class Bot():
         while True:
             # games_section = self.driver.find_element_by_class_name('sportName basketball')
             try:
-                games_section = self.driver.find_element_by_xpath('/html/body/div[4]/div[1]/div/div[1]/div[2]/div[4]/div[2]/div[2]/div/div')
+                games_section = self.driver.find_element_by_xpath('//*[@id="live-table"]/div[2]/div/div')
             except:
                 print('Access is denied. Trying again..')
                 self.move_to_live_section()
