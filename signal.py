@@ -10,7 +10,7 @@ def telegram_bot_sendtext(match_info, DEBUG=False):
 
     if DEBUG:
         bot_message = str(datetime.now())
-        send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+        send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message + '&disable_notification=True'
         response = requests.get(send_text)
         return response.json()
 
