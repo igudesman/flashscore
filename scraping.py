@@ -151,7 +151,6 @@ class Bot():
 
             try:
                 text_group = '//*[@id="tab-statistics-{q}-statistic"]/div[{block_id}]/div[1]/div[{text}]'
-                print
                 value_home = self.driver.find_element_by_xpath(text_group.format(q=quater, block_id=block_id, text=1)).text
                 title = self.driver.find_element_by_xpath(text_group.format(q=quater, block_id=block_id, text=2)).text
                 value_away = self.driver.find_element_by_xpath(text_group.format(q=quater, block_id=block_id, text=3)).text
@@ -185,7 +184,7 @@ class Bot():
                     # print('Not 3-rd quarter.')
                     return False
             except:
-                print('Something went wrong with event_stage: ', data['event_stage'])
+                # print('Something went wrong with event_stage: ', data['event_stage'])
                 return False
         else:
             return False
@@ -290,6 +289,6 @@ def testing(bot):
 if __name__ == '__main__':
 
     bot = Bot(URL)
-    bot.checking_loop(10)
+    bot.checking_loop(1)
 
     # testing(bot)
