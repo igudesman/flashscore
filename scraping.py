@@ -119,7 +119,7 @@ class Bot():
 
                 block_id += 1
 
-            print('Iteration has gone.')
+            # print('Iteration has gone.')
             sleep(timeout)
 
 
@@ -174,7 +174,7 @@ class Bot():
             try:
                 self.driver.find_element_by_xpath('//*[@id="g_3_{id}"]/div[11]'.format(id=data['id']))
             except:
-                print('Break.')
+                # print('Break.')
                 return False
         elif ('Завершен' not in data['event_stage']) and ('Перенесен' not in data['event_stage']) and (data['event_stage'] != ''):
             try:
@@ -182,7 +182,7 @@ class Bot():
                 minute = int(data['event_stage'].splitlines()[1])
 
                 if (quater != 3) or (minute < 9):
-                    print('Not 3-rd quarter.')
+                    # print('Not 3-rd quarter.')
                     return False
             except:
                 print('Something went wrong with event_stage: ', data['event_stage'])
@@ -213,12 +213,14 @@ class Bot():
             coef_home = float(stats[rows[0]][0].split('%')[0])
             coef_away = float(stats[rows[0]][1].split('%')[0])
             if (coef_home == 100.0) or (coef_away == 100.0):
+                print('Stats = 100.0!')
                 self.driver.close()
                 self.driver.switch_to.window(self.driver.window_handles[0])
                 return False
 
             if i == 3:
                 if (coef_home >= 70.0) and (coef_away >= 70.0):
+                    print('coefs are > 70.0!')
                     self.driver.close()
                     self.driver.switch_to.window(self.driver.window_handles[0])
                     return False
@@ -227,6 +229,7 @@ class Bot():
                 elif coef_away >= 70:
                     BET = 'AWAY'
                 else:
+                    print('coefs in 3rd quarter are < 70.0!')
                     self.driver.close()
                     self.driver.switch_to.window(self.driver.window_handles[0])
                     return False
@@ -259,10 +262,12 @@ class Bot():
 
         if BET == 'HOME':
             if coefs[0] < COEF:
+                print('Home team coef does not match COEF!')
                 self.driver.close()
                 self.driver.switch_to.window(self.driver.window_handles[0])
                 return False
         elif coefs[1] < COEF:
+            print('Away team coef does not match COEF!')
             self.driver.close()
             self.driver.switch_to.window(self.driver.window_handles[0])
             return False
