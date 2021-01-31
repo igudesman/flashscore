@@ -168,7 +168,10 @@ class Bot():
 
         minute = 0
         quater = 0
-
+		
+        print('{0} - {1}'.format(data['event_participant_home'], data['event_participant_away']))
+        print(data['event_stage'])
+		
         if ('Перерыв' in data['event_stage']):
             try:
                 self.driver.find_element_by_xpath('//*[@id="g_3_{id}"]/div[11]'.format(id=data['id']))
@@ -188,8 +191,6 @@ class Bot():
                 return False
         else:
             return False
-
-        print('{0} - {1}'.format(data['event_participant_home'], data['event_participant_away']))
 
         # Switch to the new window and open URL B
         self.driver.execute_script("window.open('');")
