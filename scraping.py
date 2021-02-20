@@ -130,8 +130,9 @@ class Bot():
         block_id = 1
         stat_rows = '/html/body/div[1]/div[1]/div[4]/div[12]/div[2]/div[4]/div[{q}]/div[{block_id}]'
         result = {}
+
         try:
-            self.driver.find_element_by_xpath('//*[@id="statistics-{q}-statistic"]'.format(q=quater)).click()
+            self.driver.find_element_by_xpath('//*[@id="statistics-{q}-statistic"]/span/a'.format(q=quater)).click()
         except:
             return result
 
@@ -162,7 +163,7 @@ class Bot():
                 return {}
 
             block_id += 1
-
+        print('RESULT: ', result)
         return result
 
 
