@@ -186,7 +186,7 @@ class Bot():
                 quater = int(data['event_stage'][0])
                 minute = int(data['event_stage'].splitlines()[1])
 
-                if (quater != 3) or (minute < 9):
+                if (quater != 3) or (minute < 3):
                     # print('Not 3-rd quarter.')
                     return False
             except:
