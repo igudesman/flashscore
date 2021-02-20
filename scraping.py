@@ -163,7 +163,7 @@ class Bot():
                 return {}
 
             block_id += 1
-        print('RESULT: ', result)
+        # print('RESULT: ', result)
         return result
 
 
@@ -188,8 +188,8 @@ class Bot():
                 minute = int(minute.replace("'", ''))
                 
 
-                if (quater != 3) or (minute < 3):
-                    print('Not 3-rd quarter.')
+                if (quater != 3) or (minute < 8):
+                    # print('Not 3-rd quarter.')
                     return False
             except:
                 print('Something went wrong with event_stage: ', data['event_stage'])
