@@ -88,36 +88,38 @@ class Bot():
             correct_league = False
             league_info = None
             block_id = 1
+            try:
+                while True:
 
-            while True:
+                    try:
+                        event = self.driver.find_element_by_xpath('/html/body/div[5]/div[1]/div/div[1]/div[2]/div[4]/div[2]/div[2]/div/div/div[{}]'.format(block_id))
+                    except:
+                        break
 
-                try:
-                    event = self.driver.find_element_by_xpath('/html/body/div[5]/div[1]/div/div[1]/div[2]/div[4]/div[2]/div[2]/div/div/div[{}]'.format(block_id))
-                except:
-                    break
+                    try:
+                        class_name = event.get_attribute('class')
+                    except:
+                        break
 
-                try:
-                    class_name = event.get_attribute('class')
-                except:
-                    break
+                    if 'event__header' in class_name:
+                        correct_league, league_info = self.is_correct_league(event)
+                        # print(league_info)
+                        block_id += 1
+                        continue
 
-                if 'event__header' in class_name:
-                    correct_league, league_info = self.is_correct_league(event)
-                    # print(league_info)
+                    if correct_league:
+                        match_info = self.event_info(event)
+                        bet = self.calculate_indicator(match_info)
+                        match_info['league'] = league_info
+                        # telegram_bot_sendtext(match_info, True)
+                        if bet:
+                            if match_info['id'] not in self.already_alerted_ids:
+                                self.already_alerted_ids.append(match_info['id'])
+                                telegram_bot_sendtext(match_info, False)
+
                     block_id += 1
-                    continue
-
-                if correct_league:
-                    match_info = self.event_info(event)
-                    bet = self.calculate_indicator(match_info)
-                    match_info['league'] = league_info
-                    # telegram_bot_sendtext(match_info, True)
-                    if bet:
-                        if match_info['id'] not in self.already_alerted_ids:
-                            self.already_alerted_ids.append(match_info['id'])
-                            telegram_bot_sendtext(match_info, False)
-
-                block_id += 1
+            except:
+                continue
 
             # print('Iteration has gone.')
             sleep(timeout)
@@ -168,10 +170,10 @@ class Bot():
 
         minute = 0
         quater = 0
-		
+        
         print('{0} - {1}'.format(data['event_participant_home'], data['event_participant_away']))
         print(data['event_stage'])
-		
+        
         if ('Перерыв' in data['event_stage']):
             try:
                 self.driver.find_element_by_xpath('//*[@id="g_3_{id}"]/div[11]'.format(id=data['id']))
