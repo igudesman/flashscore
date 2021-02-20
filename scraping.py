@@ -184,7 +184,9 @@ class Bot():
         elif ('Завершен' not in data['event_stage']) and ('Перенесен' not in data['event_stage']) and (data['event_stage'] != ''):
             try:
                 quater = int(data['event_stage'][0])
-                minute = int(data['event_stage'].splitlines()[1])
+                minute = data['event_stage'].splitlines()[1]
+                minute = int(minute.replace("'", ''))
+                
 
                 if (quater != 3) or (minute < 3):
                     print('Not 3-rd quarter.')
