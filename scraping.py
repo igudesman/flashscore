@@ -179,7 +179,7 @@ class Bot():
             try:
                 self.driver.find_element_by_xpath('//*[@id="g_3_{id}"]/div[11]'.format(id=data['id']))
             except:
-                # print('Break.')
+                print('Break.')
                 return False
         elif ('Завершен' not in data['event_stage']) and ('Перенесен' not in data['event_stage']) and (data['event_stage'] != ''):
             try:
@@ -187,10 +187,10 @@ class Bot():
                 minute = int(data['event_stage'].splitlines()[1])
 
                 if (quater != 3) or (minute < 3):
-                    # print('Not 3-rd quarter.')
+                    print('Not 3-rd quarter.')
                     return False
             except:
-                # print('Something went wrong with event_stage: ', data['event_stage'])
+                print('Something went wrong with event_stage: ', data['event_stage'])
                 return False
         else:
             return False
