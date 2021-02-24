@@ -134,13 +134,21 @@ class Bot():
         try:
             self.driver.find_element_by_xpath('//*[@id="statistics-{q}-statistic"]/span/a'.format(q=quater)).click()
         except:
-            return result
+            try:
+                self.driver.find_element_by_xpath('//*[@id="detail"]/div[8]/a[{q}]'.format(q=quater+1)).click()
+            except:
+                print('Cannot go to quater!')
+                return result
 
         while True:
             try:
                 stats = self.driver.find_element_by_xpath('//*[@id="tab-statistics-{q}-statistic"]/div[{block_id}]'.format(q=quater, block_id=block_id))
             except:
-                break
+                try:
+                    stats = self.driver.find_element_by_xpath('//*[@id="detail"]/div[{block_id}]'.format(q=quater, block_id=block_id + 9))
+                except:
+                    print('No stats in quater!')
+                    break
 
             try:
                 stats_class_name = stats.get_attribute('class')
