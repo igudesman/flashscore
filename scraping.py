@@ -52,7 +52,7 @@ class Bot():
 
         id = event_object.get_attribute('id')
         id = id.split('_')[-1]
-        event_url = 'https://www.flashscore.ru/match/{id}/#match-statistics;'.format(id=id)
+        event_url = 'https://www.flashscore.ru/match/{id}/#match-summary/match-statistics/'.format(id=id)
 
         return {'id': id,
                 'event_stage': event_stage,
