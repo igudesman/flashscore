@@ -145,7 +145,7 @@ class Bot():
                 stats = self.driver.find_element_by_xpath('//*[@id="tab-statistics-{q}-statistic"]/div[{block_id}]'.format(q=quater, block_id=block_id))
             except:
                 try:
-                    stats = self.driver.find_element_by_xpath('//*[@id="detail"]/div[{block_id}]'.format(q=quater, block_id=block_id + 9))
+                    stats = self.driver.find_element_by_xpath('//*[@id="detail"]/div[{block_id}]'.format(block_id=block_id + 9))
                 except:
                     print('No stats in quater!')
                     break
