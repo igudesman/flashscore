@@ -210,6 +210,7 @@ class Bot():
         self.driver.switch_to.window(self.driver.window_handles[1])
         self.driver.get(data['event_url'] + str(quater))
         #sleep(10)
+        print(data['event_url'] + str(quater))
 
         # getting quater's stats
         BET = ''
