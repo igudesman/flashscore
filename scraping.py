@@ -196,9 +196,9 @@ class Bot():
                 minute = int(minute.replace("'", ''))
                 
 
-                # if (quater != 3) or (minute < 8):
-                    # print('Not 3-rd quarter.')
-                    # return False
+                if (quater != 3) or (minute < 8):
+                    print('Not 3-rd quarter.')
+                    return False
             except:
                 print('Something went wrong with event_stage: ', data['event_stage'])
                 return False
@@ -208,7 +208,7 @@ class Bot():
         # Switch to the new window and open URL B
         self.driver.execute_script("window.open('');")
         self.driver.switch_to.window(self.driver.window_handles[1])
-        self.driver.get(data['event_url'] + str(3))
+        self.driver.get(data['event_url'] + str(quater))
         #sleep(10)
         print(data['event_url'] + str(quater))
 
