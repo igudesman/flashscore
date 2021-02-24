@@ -208,7 +208,7 @@ class Bot():
         # Switch to the new window and open URL B
         self.driver.execute_script("window.open('');")
         self.driver.switch_to.window(self.driver.window_handles[1])
-        self.driver.get(data['event_url'] + str(quater))
+        self.driver.get(data['event_url'] + str(3))
         #sleep(10)
         print(data['event_url'] + str(quater))
 
