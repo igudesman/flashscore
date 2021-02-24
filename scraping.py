@@ -137,7 +137,7 @@ class Bot():
             try:
                 self.driver.find_element_by_xpath('//*[@id="detail"]/div[8]/a[{q}]'.format(q=quater+1)).click()
             except:
-                print('Cannot go to quater!')
+                print('Cannot go to quater {0}!'.format(quater))
                 return result
 
         while True:
