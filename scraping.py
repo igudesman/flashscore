@@ -301,6 +301,6 @@ def testing(bot):
 if __name__ == '__main__':
 
     bot = Bot(URL)
-    # bot.checking_loop(1)
+    bot.checking_loop(1)
 
-    testing(bot)
+    # testing(bot)
