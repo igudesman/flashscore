@@ -11,11 +11,13 @@ class Bot():
     def __init__(self, url):
 
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--no-sandbox")
-        self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+        # chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+        # chrome_options.add_argument("--headless")
+        # chrome_options.add_argument("--disable-dev-shm-usage")
+        # chrome_options.add_argument("--no-sandbox")
+        # self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+        
+        self.driver = webdriver.Chrome(chrome_options=chrome_options)
 
         self.already_alerted_ids = []
         self.driver.implicitly_wait(10)
@@ -126,49 +128,44 @@ class Bot():
 
 
     def get_match_stats(self, content, quater):
-
+        self.driver.implicitly_wait(2)
         block_id = 1
-        stat_rows = '/html/body/div[1]/div[1]/div[4]/div[12]/div[2]/div[4]/div[{q}]/div[{block_id}]'
+        # stat_rows = '/html/body/div[1]/div[1]/div[4]/div[12]/div[2]/div[4]/div[{q}]/div[{block_id}]'
         result = {}
 
         try:
-            self.driver.find_element_by_xpath('//*[@id="statistics-{q}-statistic"]/span/a'.format(q=quater)).click()
+            quater_stats = self.driver.find_element_by_xpath('/html/body/div[1]/div[8]/a[{q}]'.format(q=quater+1)).get_attribute('href')
+            self.driver.get(quater_stats)
         except:
-            try:
-                self.driver.find_element_by_xpath('//*[@id="detail"]/div[8]/a[{q}]'.format(q=quater+1)).click()
-            except:
-                print('Cannot go to quater {0}!'.format(quater))
-                return result
+            print('Cannot go to quater {0}!'.format(quater))
+            
+        text_group = '//*[@id="detail"]/div[{block_id}]/div[1]/div[{text}]'
 
         while True:
-            try:
-                stats = self.driver.find_element_by_xpath('//*[@id="tab-statistics-{q}-statistic"]/div[{block_id}]'.format(q=quater, block_id=block_id))
-            except:
-                try:
-                    stats = self.driver.find_element_by_xpath('//*[@id="detail"]/div[{block_id}]'.format(block_id=block_id + 9))
-                except:
-                    print('No stats in quater!')
-                    break
+            # try:
+            #     stats = self.driver.find_element_by_xpath('//*[@id="detail"]/div[{block_id}]'.format(block_id=block_id+9))
+            # except:
+            #     print('No stats in quater!')
+
+            # try:
+            #     stats_class_name = stats.get_attribute('class')
+            # except:
+            #     block_id += 1
+            #     continue
+
+            # if (stats_class_name != 'statRow'):
+            #     block_id += 1
+            #     continue
 
             try:
-                stats_class_name = stats.get_attribute('class')
-            except:
-                block_id += 1
-                continue
-
-            if (stats_class_name != 'statRow'):
-                block_id += 1
-                continue
-
-            try:
-                text_group = '//*[@id="tab-statistics-{q}-statistic"]/div[{block_id}]/div[1]/div[{text}]'
-                value_home = self.driver.find_element_by_xpath(text_group.format(q=quater, block_id=block_id, text=1)).text
-                title = self.driver.find_element_by_xpath(text_group.format(q=quater, block_id=block_id, text=2)).text
-                value_away = self.driver.find_element_by_xpath(text_group.format(q=quater, block_id=block_id, text=3)).text
+                value_home = self.driver.find_element_by_xpath(text_group.format(block_id=block_id+9, text=1)).text
+                title = self.driver.find_element_by_xpath(text_group.format(block_id=block_id+9, text=2)).text
+                value_away = self.driver.find_element_by_xpath(text_group.format(block_id=block_id+9, text=3)).text
+                # print('Title: ', title)
                 if title in content:
                     result[title] = [value_home, value_away]
             except:
-                return {}
+                break
 
             block_id += 1
         # print('RESULT: ', result)
@@ -180,7 +177,7 @@ class Bot():
         minute = 0
         quater = 0
         
-        print('{0} - {1}'.format(data['event_participant_home'], data['event_participant_away']))
+        # print('{0} - {1}'.format(data['event_participant_home'], data['event_participant_away']))
         print(data['event_stage'])
         
         if ('Перерыв' in data['event_stage']):
@@ -210,7 +207,7 @@ class Bot():
         self.driver.switch_to.window(self.driver.window_handles[1])
         self.driver.get(data['event_url'] + str(quater))
         #sleep(10)
-        print(data['event_url'] + str(quater))
+        # print(data['event_url'] + str(quater))
 
         # getting quater's stats
         BET = ''
@@ -250,41 +247,41 @@ class Bot():
 
         print(BET)
         # getting match odds
-        odds = self.driver.find_elements_by_tag_name('tr')
-        coefs = []
+        # odds = self.driver.find_elements_by_tag_name('tr')
+        # coefs = []
 
-        for odd in odds:
-            try:
-                if odd.get_attribute('class') == 'odd':
-                    spans = odd.find_elements_by_tag_name('span')
-                    for span in spans:
-                        try:
-                            if 'odds-wrap' in span.get_attribute('class'):
-                                coefs.append(float(span.text))
-                        except:
-                            continue
-            except:
-                continue
+        # for odd in odds:
+        #     try:
+        #         if odd.get_attribute('class') == 'odd':
+        #             spans = odd.find_elements_by_tag_name('span')
+        #             for span in spans:
+        #                 try:
+        #                     if 'odds-wrap' in span.get_attribute('class'):
+        #                         coefs.append(float(span.text))
+        #                 except:
+        #                     continue
+        #     except:
+        #         continue
 
-        print('COEFS: ', coefs)
+        # print('COEFS: ', coefs)
 
-        if len(coefs) != 2:
-            print('Did not find coefs.')
-            self.driver.close()
-            self.driver.switch_to.window(self.driver.window_handles[0])
-            return False
+        # if len(coefs) != 2:
+        #     print('Did not find coefs.')
+        #     self.driver.close()
+        #     self.driver.switch_to.window(self.driver.window_handles[0])
+        #     return False
 
-        if BET == 'HOME':
-            if coefs[0] < COEF:
-                print('Home team coef does not match COEF!')
-                self.driver.close()
-                self.driver.switch_to.window(self.driver.window_handles[0])
-                return False
-        elif coefs[1] < COEF:
-            print('Away team coef does not match COEF!')
-            self.driver.close()
-            self.driver.switch_to.window(self.driver.window_handles[0])
-            return False
+        # if BET == 'HOME':
+        #     if coefs[0] < COEF:
+        #         print('Home team coef does not match COEF!')
+        #         self.driver.close()
+        #         self.driver.switch_to.window(self.driver.window_handles[0])
+        #         return False
+        # elif coefs[1] < COEF:
+        #     print('Away team coef does not match COEF!')
+        #     self.driver.close()
+        #     self.driver.switch_to.window(self.driver.window_handles[0])
+        #     return False
 
 
         self.driver.close()
@@ -295,7 +292,7 @@ class Bot():
 def testing(bot):
     data = {
         'event_stage': '3 \n 10',
-        'event_url': 'https://www.flashscore.ru/match/f5jCDOpC/#match-statistics;'
+        'event_url': 'https://www.flashscore.ru/match/f5jCDOpC/#match-summary/match-statistics/'
     }
 
     print(bot.calculate_indicator(data))
@@ -304,6 +301,6 @@ def testing(bot):
 if __name__ == '__main__':
 
     bot = Bot(URL)
-    bot.checking_loop(1)
+    # bot.checking_loop(1)
 
-    # testing(bot)
+    testing(bot)
